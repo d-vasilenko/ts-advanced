@@ -191,14 +191,17 @@
   },
   "active": "4f5f6b01a444722e",
   "lastOpenFiles": [
+    "practice/module-00/dist/calculator.js",
+    "practice/module-00/src/calculator.ts",
+    "practice/module-00/calculator/calculator.js",
+    "practice/module-00/calculator/main.js",
+    "practice/module-00/calculator/main.ts",
+    "practice/module-00/calculator",
+    "lectures/lecture-07.md",
     "math/20261027.pdf",
     "math/Document 21.pdf",
     "math/books/library/[I.A.Vinogradova,_S.N.Olehnik,_V.A.Sadovnichy]_Zad(libcats.org).pdf",
     "math/books/library/[I.A.Vinogradova,_S.N.Olehnik,_V.A.Sadovnichy.]_Za(libcats.org).pdf",
-    "math/20261021.pdf",
-    "math/books/library/20261021.pdf",
-    "math/books/library/Demidovich.pdf",
-    "math/books/library/Unconfirmed 267392.crdownload",
-    "math/books/library/Задачи по теории множеств, математической логике и теории алгоритмов [2002] И.А. Лавров, Л.Л. Максимова..pdf"
+    "math/20261021.pdf"
   ]
 }
