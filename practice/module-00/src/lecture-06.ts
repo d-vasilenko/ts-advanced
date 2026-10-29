@@ -1,122 +1,80 @@
-/**
- * Ответы на вопросы
- * 1 сложность O(n) - нужно пройтись по всем эллементам массива
- * 
- * 2 сложность O(n^2) - вложенный цикл
- * 
- * 3 я бы использовал Set() ))) ну а вообще, я бы собрал бы хеш например {} ключи эллементы, значения количиство вхождений
- * 
- * 4 потому, что сложность O(log n) чем больше данных тем он эффективнее, количество шагов растет логорифмически
- * 
- * A O(n); B O(n^2); C O(n)
- */
+import * as readline from 'readline';
 
-// #### Задание 2: Оптимизация
-// Дана функция с `O(n²)` сложностью. Оптимизируй её до `O(n)` с использованием хэш-таблицы:
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
+const OPERATORS = ['+', '-', '*', '/'] as const;
+type Operator = typeof OPERATORS[number];
 
-// function hasPairWithSum(arr: number[], target: number): boolean {
-//   for (let i = 0; i < arr.length; i++) {
-//     for (let j = i + 1; j < arr.length; j++) {
-//       if (arr[i] + arr[j] === target) return true;
-//     }
-//   }
-//   return false;
-// }
-
-function myHasPairWithSum(arr: number[], target: number): boolean {
-  const seen = new Set<number>();
-  for (const el of arr) {
-    let complement = target - el;
-    if (seen.has(complement)) {
-      return true;
-    } else {
-      seen.add(el);
-    }
-  }
-  return false;
+interface Input {
+  readonly a: number;
+  readonly op: Operator;
+  readonly b: number;
 }
 
-// ==========================================
-// tests
-// ==========================================
-function runTests() {
-  const tests = [
-    {
-      name: "Стандартная пара (в середине)",
-      arr: [1, 2, 3, 4, 5],
-      target: 7,
-      expected: true, // 3 + 4
-    },
-    {
-      name: "Пары не существует",
-      arr: [1, 2, 3, 4, 5],
-      target: 10,
-      expected: false,
-    },
-    {
-      name: "Отрицательные числа",
-      arr: [5, -2, 3, 8],
-      target: 3,
-      expected: true, // 5 + (-2)
-    },
-    {
-      name: "Одинаковые элементы дают сумму",
-      arr: [4, 2, 4],
-      target: 8,
-      expected: true, // 4 + 4 (разные индексы)
-    },
-    {
-      name: "Одинаковые элементы НЕ дают сумму (нужны два разных)",
-      arr: [4],
-      target: 8,
-      expected: false,
-    },
-    {
-      name: "Пустой массив",
-      arr: [],
-      target: 5,
-      expected: false,
-    },
-    {
-      name: "Целевая сумма равна нулю",
-      arr: [10, -5, 5, 2],
-      target: 0,
-      expected: true, // -5 + 5
-    }
-  ];
+function isOperator(op: unknown): op is Operator {
+  return typeof op === 'string' && OPERATORS.some(o => o === op);
+}
 
-  let passed = 0;
-  let failed = 0;
+function parseExpression(input: string): Input {
+  const parts = input.trim().split(/\s+/);
+  if (parts.length !== 3) {
+    throw new Error('Error: invalid input')
+  }
+  const [a, op, b] = parts;
+  const aNum = Number(a);
+  const bNum = Number(b);
+  if (!isOperator(op)) {
+    throw new Error(`Error: unknown operator ${op}`);
+  }
+  if (!Number.isFinite(aNum) || !Number.isFinite(bNum)) {
+    throw new Error('Error: number is NaN!');
+  }
+  return {
+    a: aNum,
+    op,
+    b: bNum,
+  };
+}
 
-  console.log("🚀 Запуск тестов для hasPairWithSum...\n");
+function calculate(input: Input): number {
+  if (input.op === '/' && input.b === 0) {
+    throw new Error('Error: division by zero!');
+  }
+  if (input.op === '+') return input.a + input.b;
+  if (input.op === '-') return input.a - input.b;
+  if (input.op === '*') return input.a * input.b;
+  if (input.op === '/') return input.a / input.b;
+  const _exhaustive: never = input.op;
+  throw new Error(`Error: unknown operator ${_exhaustive}`);
+}
 
-  for (const test of tests) {
-    try {
-      const result = myHasPairWithSum(test.arr, test.target);
-      if (result === test.expected) {
-        console.log(`✅ PASS: ${test.name}`);
-        passed++;
-      } else {
-        console.log(`❌ FAIL: ${test.name}`);
-        console.log(`   Ожидалось: ${test.expected}, Получено: ${result}`);
-        console.log(`   Входные данные: arr=[${test.arr}], target=${test.target}`);
-        failed++;
+function main() {
+  console.log('Calculator is running. Enter expression (for example "5 + 3") or "exit"')
+  const askQuestion = () => {
+    rl.question('>', (input: string) => {
+      const trimmedInput = input.trim();
+
+      if (trimmedInput.toLowerCase() === 'exit') {
+        console.log('Goodbye!');
+        rl.close();
+        return;
       }
-    } catch (error) {
-      console.log(`💥 ERROR: ${test.name}`);
-      console.log(`   Исключение: ${error instanceof Error ? error.message : String(error)}`);
-      failed++;
-    }
-  }
+    
+      try {
+        const result = calculate(parseExpression(trimmedInput));
+        console.log(result);
+      } catch (error) {
+        if (error instanceof Error) console.error(error.message);
+      }
 
-  console.log(`\n📊 Итог: Пройдено ${passed} из ${tests.length} тестов.`);
-  if (failed === 0) {
-    console.log("🎉 Отличная работа! Все тесты пройдены.");
-  } else {
-    console.log("⚠️ Есть ошибки. Проверь логику и попробуй снова.");
-  }
+      askQuestion();
+    });
+  };
+
+  askQuestion();
 }
 
-// Запускаем тесты
-runTests();
+main();

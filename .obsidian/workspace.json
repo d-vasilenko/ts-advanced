@@ -191,8 +191,11 @@
   },
   "active": "4f5f6b01a444722e",
   "lastOpenFiles": [
-    "practice/module-00/dist/lecture-06.js",
+    "lectures/lecture-08.md",
+    "lectures/lecture-08",
     "practice/module-00/src/lecture-06.ts",
+    "practice/module-00/src/lecture-07.ts",
+    "practice/module-00/dist/lecture-06.js",
     "lectures/lecture-06.md",
     "practice/module-00/dist/calculator.js",
     "practice/module-00/src/calculator.ts",
@@ -200,9 +203,6 @@
     "practice/module-00/calculator/main.js",
     "practice/module-00/calculator/main.ts",
     "practice/module-00/calculator",
-    "lectures/lecture-07.md",
-    "math/20261027.pdf",
-    "math/Document 21.pdf",
-    "math/books/library/[I.A.Vinogradova,_S.N.Olehnik,_V.A.Sadovnichy]_Zad(libcats.org).pdf"
+    "lectures/lecture-07.md"
   ]
 }
